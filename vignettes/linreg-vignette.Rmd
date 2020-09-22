@@ -1,8 +1,10 @@
 ---
-title: "linreg-vignette"
+title: "lab4_vignette"
+author: "CHEN and Aqsa"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{linreg-vignette}
+  %\VignetteIndexEntry{lab4_vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,53 +17,58 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(LinReg)
-```
-## Usage
-``` 
-linregObject = linreg$new(formula, data)
-```
-## Arguments
------------   ---------------------------------------------------------------------------------
-__formula__   an object of class `"formula":` a symbolic description of the model structure to be                  fitted. The details of model specification are given under tram and in the package                 vignette.
-
-__data__      an optional data frame, list or environment (or object coercible by `as.data.frame` to a data frame) containing the variables in the model. 
------------
-## Detail
-
-
-## Value
-An object of class `Linreg`, with corresponding `coef`, `coefvariance`, `qr_coef`, `resid`,`pred`, `summary`, `print`, `plot`,`residualvariance` and `df`.
-
-## Example
-
-
-### Least Square coef function
-```{r}
-
+library(lab4Pkg)
 ```
 
-### QR decomposition function
-```{r}
+# Description
+calculate the linear regression as lm()
 
+#Usage
+```R
+
+devtools::intall_github('ssss')
 ```
 
-### Print function
-```{r}
+# linreg
+doing linear regression and return an object with data.
 
-```
+## resid()
+method of the class 
+return the residuals
 
-### Summary function
-```{r}
+## pred()
+method of the class 
+return the fitted value
 
-```
+## coef()
+method of the class 
+return the coefficients
 
-### lm Summary function
-```{r}
+## print()
+method of the class 
+return the vector of coefficients 
 
-```
+##summary()
+method of the class 
+return the results of coefficients, standard errors, t-value, p-value and the degree of freedom
 
-### Plot function
-```{r}
+## plot()
+method of the class 
+return the graph:
+
+1.x--fitted value  y--residual
+2.x--fitted value  y--standarized residuals
+
+## examples
+```r
+lr  <-  linreg(Petal.Length~Species, data = iris)
+
+print(lr)
+
+plot(lr)
+
+resid(lr)
+
+summary(lr)
 
 ```
