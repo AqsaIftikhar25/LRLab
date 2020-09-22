@@ -5,7 +5,7 @@ Version: 0.1.0
 Author: Aqsa Iftikhar, Kangbo Chen
 Maintainer: The package maintainer Aqsa<aqsaciit@gmail.com>, CHEN <Olivandtempest@gmail.com>
 Description: This function creates a linear regression package and calls methods such as
-    print(), plot(), resid(), pred(), coef(), summary()
+    print(), plot(), resid(), pred(), coef(), summary().
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
