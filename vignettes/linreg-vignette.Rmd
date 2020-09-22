@@ -1,10 +1,10 @@
 ---
-title: "lab4_vignette"
+title: "LinReg_vignette"
 author: "CHEN and Aqsa"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{lab4_vignette}
+  %\VignetteIndexEntry{LinReg_vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(lab4Pkg)
+library(LinReg)
 ```
 
 # Description
@@ -26,7 +26,7 @@ calculate the linear regression as lm()
 #Usage
 ```R
 
-devtools::intall_github('ssss')
+devtools::intall_github('AqsaIftikhar25/LRLab')
 ```
 
 # linreg
