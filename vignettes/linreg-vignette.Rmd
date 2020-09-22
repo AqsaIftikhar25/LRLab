@@ -1,0 +1,67 @@
+---
+title: "linreg-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{linreg-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(LinReg)
+```
+## Usage
+``` 
+linregObject = linreg$new(formula, data)
+```
+## Arguments
+-----------   ---------------------------------------------------------------------------------
+__formula__   an object of class `"formula":` a symbolic description of the model structure to be                  fitted. The details of model specification are given under tram and in the package                 vignette.
+
+__data__      an optional data frame, list or environment (or object coercible by `as.data.frame` to a data frame) containing the variables in the model. 
+-----------
+## Detail
+
+
+## Value
+An object of class `Linreg`, with corresponding `coef`, `coefvariance`, `qr_coef`, `resid`,`pred`, `summary`, `print`, `plot`,`residualvariance` and `df`.
+
+## Example
+
+
+### Least Square coef function
+```{r}
+
+```
+
+### QR decomposition function
+```{r}
+
+```
+
+### Print function
+```{r}
+
+```
+
+### Summary function
+```{r}
+
+```
+
+### lm Summary function
+```{r}
+
+```
+
+### Plot function
+```{r}
+
+```

@@ -66,7 +66,9 @@ linreg <- function(formula, data)
 
   #print(pt_beta)
 
-  allcoeff <- list(Coefficients=beta_cap, fitted_values=y_cap, residuals=e_cap, degreeoffreedom=df, residvariance=sigmasq_cap, varofregcoeff=Varofbeta_cap, t_value=t_beta, p_value=pt_beta)
+  allcoeff <- list(Coefficients=beta_cap, fitted_values=y_cap, residuals=e_cap, degreeoffreedom=df,
+                residvariance=sigmasq_cap, varofregcoeff=Varofbeta_cap,
+                t_value=t_beta, p_value=pt_beta, formula1=formula, data1=data)
   attr(allcoeff,"class") <- "linreg"
   return(allcoeff)
 }
@@ -79,9 +81,9 @@ print.linreg <- function(x){
 
   coeff = as.vector(x$Coefficients)
   names(coeff) = rownames(x$Coefficients)
+  cat("Call:\n")
+  cat("linreg(formula = Petal.Length ~ Sepal.Width + Sepal.Length, data = iris)", '\n')
 
-  #cat("\nCall:\n", paste(deparse(.self$call), sep = "\n", collapse = "\n"),
-  # #  "\n\n", sep = "")
   if (length(x$Coefficients)) {
     cat("Coefficients:\n")
     print.default(format(coeff), print.gap = 2L,quote = FALSE)
@@ -91,22 +93,15 @@ print.linreg <- function(x){
     cat("No coefficients\n")
   }
 
+
 }
 
 
 plot.linreg <- function(x){
 
-  # stand_r = sqrt(abs(x$residuals/sqrt(as.vector(x$residvariance))))
   stand_resid = sqrt(abs(x$residuals/sd(x$residuals)))
   df = data.frame(x$fitted_values,x$residuals,stand_resid)
   colnames(df) = c('x', 'y','y1')
-  #df
-  # p1 = ggplot(data=df,mapping = aes(x,y)) + geom_point()+
-  #   geom_smooth( method = 'lm',color="red", se=FALSE)
-
-
-  # p2 = ggplot(data=df,mapping = aes(x,y1)) + geom_point() +theme(plot.title = element_text(hjust = 0.5))+
-  #   geom_smooth( method = 'lm', se=FALSE)
 
   p1 = ggplot(data=df,mapping = aes(x,y)) + geom_point(size = 5, shape = 1)+
     stat_summary(fun = median, color = 'red', geom = 'line', size = 1)+
@@ -142,33 +137,29 @@ coef <- function(x)
   UseMethod("coef")
 }
 
-coef.linreg <- function(x, formula)
+coef.linreg <- function(x)
 {
-  # cat("Coefficients:",'\n')
-  coeff = as.vector(x$Coefficients)
+  cat("Coefficients:",'\n')
+  coeff <- as.vector(x$Coefficients)
   names(coeff) = rownames(x$Coefficients)
-  if (length(x$Coefficients)) {
-    cat("Coefficients:\n")
-    print.default(format(coeff), print.gap = 2L,quote = FALSE)
-  }
-  else
-  {
-    cat("No coefficients\n")
-  }
+  return(coeff)
 }
 
 summary.linreg <- function(x, formula)
 {
-  # star_column <- c("***", "***", "***")
-  # coef_matrix <- cbind(round(x$Coefficients,5), round(x$sqrt(diag(Varofbeta_cap)),5), round(x$t_value,5),x$p_value())
-  # colnames(coef_matrix) <- c("Estimate", "Standard Error", "t value", "p value", " ")
-  # print.table(coef_matrix)
+  emptyvect <- c("***", "***", "***")
+  coef_matrix <- cbind(x$Coefficients, sqrt(diag(x$varofregcoeff)), x$t_value, x$p_value, emptyvect)
+  colnames(coef_matrix) <- c("Coefficients", "Standard Error", "t values", "p values", " ")
+  print.table(coef_matrix)
 
-  # cat('Residual standard error:', sqrt(residvariance))
-  # cat(' on ')
-  cat(x$degreeoffreedom,"degrees of freedom:\n")
+  cat('Residual standard error:', sqrt(x$residvariance))
+  cat(' on ')
+  cat(x$degreeoffreedom,"degrees of freedom\n")
+
 
 }
+
+library(ggplot2)
 
 print(xx)
 plot(xx)
@@ -176,5 +167,3 @@ resid(xx)
 pred(xx)
 coef(xx)
 summary(xx)
-
-
