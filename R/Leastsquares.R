@@ -9,11 +9,13 @@
 #'
 #' @return return the coefficients and coefficient names
 #' @usage linreg (formula,data)
-#'
+#' @import ggplot2
+#' @importFrom stats median model.matrix pt sd
 #' @examples
 #' linreg(Petal.Length~Species, data = iris)
 #' linreg(mpg~cyl, data = mtcars)
 #' @export
+
 
 
 linreg <- function(formula, data)
@@ -73,9 +75,18 @@ linreg <- function(formula, data)
   return(allcoeff)
 }
 
-xx = linreg(formula = Petal.Length~Species, data = iris)
+# xx = linreg(formula = Petal.Length~Species, data = iris)
 
 #Defining Methods
+
+#' @rdname print
+#' @method print linreg
+#' @export
+#'
+# print <- function(x)
+# {
+#   UseMethod("print")
+# }
 
 print.linreg <- function(x){
 
@@ -92,23 +103,29 @@ print.linreg <- function(x){
   {
     cat("No coefficients\n")
   }
-
-
 }
 
+#' @rdname plot
+#' @export
+#'
+plot <- function(x)
+{
+  UseMethod("plot")
+}
 
 plot.linreg <- function(x){
 
   stand_resid = sqrt(abs(x$residuals/sd(x$residuals)))
   df = data.frame(x$fitted_values,x$residuals,stand_resid)
-  colnames(df) = c('x', 'y','y1')
-
-  p1 = ggplot(data=df,mapping = aes(x,y)) + geom_point(size = 5, shape = 1)+
+  #colnames(df) = c('x', 'y','y1')
+  #,mapping = aes(x,y)
+  #,mapping = aes(x,y1)
+  p1 = ggplot(data=df) + geom_point(size = 5, shape = 1)+
     stat_summary(fun = median, color = 'red', geom = 'line', size = 1)+
     labs(y= "Residuals", x = "Fitted values \n lm(Petal.Length ~ Species)", title = "Residuals vs Fitted")+
     theme(plot.title = element_text(hjust = 0.5))
 
-  p2 = ggplot(data=df,mapping = aes(x,y1)) + geom_point(size = 5, shape = 1)+
+  p2 = ggplot(data=df) + geom_point(size = 5, shape = 1)+
     stat_summary(fun = mean, color = 'red', geom = 'line', size = 1)+
     labs(y= expression(sqrt('|Standardized Residuals|')), x = "Fitted values \n lm(Petal.Length ~ Species)", title = "Scale-Location")+
     theme(plot.title = element_text(hjust = 0.5))
@@ -117,10 +134,22 @@ plot.linreg <- function(x){
   print(p2)
 }
 
+#' @rdname resid
+#' @export
+#'
+resid <- function(x)
+{
+  UseMethod("resid")
+}
+
 resid.linreg <- function(x)
   {
   return(as.vector(x$residuals))
   }
+
+#' @rdname pred
+#' @export
+#'
 
 pred <- function(x)
 {
@@ -131,6 +160,10 @@ pred.linreg <- function(x)
 {
   return(as.vector(x$fitted_values))
 }
+
+#' @rdname coef
+#' @export
+#'
 
 coef <- function(x)
 {
@@ -144,6 +177,16 @@ coef.linreg <- function(x)
   names(coeff) = rownames(x$Coefficients)
   return(coeff)
 }
+
+#' @rdname summary
+#' @title sss
+#' @method summary linreg
+#' @export
+#'
+# summary <- function(x, formula)
+# {
+#   UseMethod("summary")
+# }
 
 summary.linreg <- function(x, formula)
 {
@@ -159,11 +202,9 @@ summary.linreg <- function(x, formula)
 
 }
 
-library(ggplot2)
-
-print(xx)
-plot(xx)
-resid(xx)
-pred(xx)
-coef(xx)
-summary(xx)
+# print(xx)
+# plot(xx)
+# resid(xx)
+# pred(xx)
+# coef(xx)
+# summary(xx)
