@@ -89,7 +89,6 @@ linreg <- function(formula, data)
 # }
 
 print.linreg <- function(x){
-
   coeff = as.vector(x$Coefficients)
   names(coeff) = rownames(x$Coefficients)
   cat("Call:\n")
@@ -106,6 +105,7 @@ print.linreg <- function(x){
 }
 
 #' @rdname plot
+#' @method plot linreg
 #' @export
 #'
 plot <- function(x)
@@ -135,6 +135,7 @@ plot.linreg <- function(x){
 }
 
 #' @rdname resid
+#' @method resid linreg
 #' @export
 #'
 resid <- function(x)
@@ -148,6 +149,7 @@ resid.linreg <- function(x)
   }
 
 #' @rdname pred
+#' @method pred linreg
 #' @export
 #'
 
@@ -162,6 +164,7 @@ pred.linreg <- function(x)
 }
 
 #' @rdname coef
+#' @method coef linreg
 #' @export
 #'
 
