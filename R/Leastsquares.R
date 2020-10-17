@@ -1,12 +1,8 @@
 #' Linear Regression
 #' @name Linear Regression
-#'
 #' @param formula linear expression
 #' @param data data source
-#'
 #' @description calculate coefficients of linear regression
-#'
-#'
 #' @return return the coefficients and coefficient names
 #' @usage linreg (formula,data)
 #' @import ggplot2
@@ -15,7 +11,6 @@
 #' linreg(Petal.Length~Species, data = iris)
 #' linreg(mpg~cyl, data = mtcars)
 #' @export
-
 
 
 linreg <- function(formula, data)
@@ -80,13 +75,12 @@ linreg <- function(formula, data)
 #Defining Methods
 
 #' @rdname print
-#' @method print linreg
 #' @export
-#'
-# print <- function(x)
-# {
-#   UseMethod("print")
-# }
+
+print <- function(x)
+{
+  UseMethod("print")
+}
 
 print.linreg <- function(x){
   coeff = as.vector(x$Coefficients)
@@ -105,9 +99,8 @@ print.linreg <- function(x){
 }
 
 #' @rdname plot
-#' @method plot linreg
 #' @export
-#'
+
 plot <- function(x)
 {
   UseMethod("plot")
@@ -135,9 +128,8 @@ plot.linreg <- function(x){
 }
 
 #' @rdname resid
-#' @method resid linreg
 #' @export
-#'
+
 resid <- function(x)
 {
   UseMethod("resid")
@@ -149,9 +141,8 @@ resid.linreg <- function(x)
   }
 
 #' @rdname pred
-#' @method pred linreg
 #' @export
-#'
+
 
 pred <- function(x)
 {
@@ -164,9 +155,7 @@ pred.linreg <- function(x)
 }
 
 #' @rdname coef
-#' @method coef linreg
 #' @export
-#'
 
 coef <- function(x)
 {
@@ -182,14 +171,12 @@ coef.linreg <- function(x)
 }
 
 #' @rdname summary
-#' @title sss
-#' @method summary linreg
 #' @export
-#'
-# summary <- function(x, formula)
-# {
-#   UseMethod("summary")
-# }
+
+summary <- function(x, formula)
+{
+  UseMethod("summary")
+}
 
 summary.linreg <- function(x, formula)
 {
@@ -205,9 +192,3 @@ summary.linreg <- function(x, formula)
 
 }
 
-# print(xx)
-# plot(xx)
-# resid(xx)
-# pred(xx)
-# coef(xx)
-# summary(xx)
