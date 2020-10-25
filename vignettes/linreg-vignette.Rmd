@@ -62,13 +62,9 @@ return the graph:
 ## examples
 ```r
 lr  <-  linreg(Petal.Length~Species, data = iris)
-
 print(lr)
-
 plot(lr)
-
 resid(lr)
-
 summary(lr)
 
 ```
