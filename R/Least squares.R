@@ -69,7 +69,8 @@ linreg <- function(formula, data)
   allcoeff <- list(Coefficients=beta_cap, fitted_values=y_cap, residuals=e_cap, degreeoffreedom=df,
                 residvariance=sigmasq_cap, varofregcoeff=Varofbeta_cap,
                 t_value=t_beta, p_value=pt_beta, formula1=formula, data1=data)
-  attr(allcoeff,"class") <- "linreg"
+  # attr(allcoeff,"class") <- "linreg"
+  class(allcoeff) <- 'linreg'
   return(allcoeff)
 }
 
@@ -81,8 +82,8 @@ print.linreg <- function(x){
 
   coeff = as.vector(x$Coefficients)
   names(coeff) = rownames(x$Coefficients)
-  cat("Call:\n")
-  cat("linreg(formula = Petal.Length ~ Sepal.Width + Sepal.Length, data = iris)", '\n')
+  cat("Call:\n", paste(x$formula1 , sep = "\n"),"\n\n", sep = "")
+  # cat("linreg(formula = Petal.Length ~ Sepal.Width + Sepal.Length, data = iris)", '\n')
 
   if (length(x$Coefficients)) {
     cat("Coefficients:\n")
