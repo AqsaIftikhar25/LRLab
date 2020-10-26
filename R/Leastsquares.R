@@ -10,6 +10,12 @@
 #' @examples
 #' linreg(Petal.Length~Species, data = iris)
 #' linreg(mpg~cyl, data = mtcars)
+#' @export print.linreg
+#' @export plot.linreg
+#' @export resid.linreg
+#' @export pred.linreg
+#' @export coef.linreg
+#' @export summary.linreg
 #' @export
 
 
@@ -65,7 +71,7 @@ linreg <- function(formula, data)
 
   allcoeff <- list(Coefficients=beta_cap, fitted_values=y_cap, residuals=e_cap, degreeoffreedom=df,
                 residvariance=sigmasq_cap, varofregcoeff=Varofbeta_cap,
-                t_value=t_beta, p_value=pt_beta, formula1=formula, data1=data)
+                t_value=t_beta, p_value=pt_beta, formula1=formula, data1=substitute(data))
   # attr(allcoeff,"class") <- "linreg"
   class(allcoeff) <- 'linreg'
   return(allcoeff)
@@ -75,14 +81,12 @@ linreg <- function(formula, data)
 # xx = linreg(formula = Petal.Length~Species, data = iris)
 
 #Defining Methods
-#' @rdname print
-#' @export
+
 print.linreg <- function(x){
 
   coeff = as.vector(x$Coefficients)
   names(coeff) = rownames(x$Coefficients)
-  cat("Call:\n", paste(x$formula1 , sep = "\n"),"\n\n", sep = "")
-  # cat("linreg(formula = Petal.Length ~ Sepal.Width + Sepal.Length, data = iris)", '\n')
+  cat("linreg(formula = ",format(x$formula1), ", data = ", x$data1, ")\n\n", sep = "")
 
   if (length(x$Coefficients)) {
     cat("Coefficients:\n")
@@ -92,11 +96,8 @@ print.linreg <- function(x){
   {
     cat("No coefficients\n")
   }
-
-
 }
-#' @rdname plot
-#' @export
+
 
 plot.linreg <- function(x){
 
@@ -118,16 +119,12 @@ plot.linreg <- function(x){
   print(p2)
 }
 
-#' @rdname resid
-#' @export
 
 resid.linreg <- function(x)
 {
   return(as.vector(x$residuals))
 }
 
-#' @rdname pred
-#' @export
 
 pred <- function(x)
 {
@@ -139,8 +136,6 @@ pred.linreg <- function(x)
   return(as.vector(x$fitted_values))
 }
 
-#' @rdname coef
-#' @export
 
 coef <- function(x)
 {
@@ -155,8 +150,6 @@ coef.linreg <- function(x)
   return(coeff)
 }
 
-#' @rdname summary
-#' @export
 
 
 summary.linreg <- function(x, formula)
