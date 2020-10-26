@@ -2,8 +2,8 @@ Package: LinReg
 Type: Package
 Title: This is a linear regression package 
 Version: 0.1.0
-Author: Aqsa Iftikhar, Kangbo Chen
-Maintainer: The package maintainer Aqsa<aqsaciit@gmail.com>, CHEN <Olivandtempest@gmail.com>
+Author: Aqsa Iftikhar, Kangbo Chen, Samira Barhemat
+Maintainer: Aqsa<aqsaciit@gmail.com>, CHEN <Olivandtempest@gmail.com>, Samira<samiraee@gmail.com>
 Description: This function creates a linear regression package and calls methods such as
     print(), plot(), resid(), pred(), coef(), summary().
 License: GPL-3

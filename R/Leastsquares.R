@@ -8,14 +8,14 @@
 #' @import ggplot2
 #' @importFrom stats median model.matrix pt sd
 #' @examples
-#' linreg(Petal.Length~Species, data = iris)
+#' l1 <- linreg(Petal.Length~Species, data = iris)
 #' linreg(mpg~cyl, data = mtcars)
-#' @export print.linreg
-#' @export plot.linreg
-#' @export resid.linreg
-#' @export pred.linreg
-#' @export coef.linreg
-#' @export summary.linreg
+#' @exportMethod print.linreg
+#' @exportMethod plot.linreg
+#' @exportMethod resid.linreg
+#' @exportMethod pred.linreg
+#' @exportMethod coef.linreg
+#' @exportMethod summary.linreg
 #' @export
 
 
@@ -98,11 +98,10 @@ print.linreg <- function(x){
   }
 }
 
+plot.linreg <- function(obj){
 
-plot.linreg <- function(x){
-
-  stand_resid = sqrt(abs(x$residuals/sd(x$residuals)))
-  df = data.frame(x$fitted_values,x$residuals,stand_resid)
+  stand_resid = sqrt(abs(obj$residuals/sd(obj$residuals)))
+  df = data.frame(obj$fitted_values,obj$residuals,stand_resid)
   colnames(df) = c('x', 'y','y1')
 
   p1 = ggplot(data=df,mapping = aes(x,y)) + geom_point(size = 5, shape = 1)+
@@ -137,6 +136,7 @@ pred.linreg <- function(x)
 }
 
 
+
 coef <- function(x)
 {
   UseMethod("coef")
@@ -149,7 +149,6 @@ coef.linreg <- function(x)
   names(coeff) = rownames(x$Coefficients)
   return(coeff)
 }
-
 
 
 summary.linreg <- function(x, formula)
@@ -173,3 +172,5 @@ summary.linreg <- function(x, formula)
 # pred(xx)
 # coef(xx)
 # summary(xx)
+#
+# library('ggplot2')

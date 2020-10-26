@@ -19,6 +19,6 @@ return the coefficients and coefficient names
 calculate coefficients of linear regression
 }
 \examples{
-linreg(Petal.Length~Species, data = iris)
+l1 <- linreg(Petal.Length~Species, data = iris)
 linreg(mpg~cyl, data = mtcars)
 }
