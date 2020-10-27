@@ -6,6 +6,7 @@
 #' @return return the coefficients and coefficient names
 #' @usage linreg (formula,data)
 #' @import ggplot2
+#' @import gridExtra
 #' @importFrom stats median model.matrix pt sd
 #' @examples
 #' l1 <- linreg(Petal.Length~Species, data = iris)
@@ -71,34 +72,56 @@ linreg <- function(formula, data)
 
   allcoeff <- list(Coefficients=beta_cap, fitted_values=y_cap, residuals=e_cap, degreeoffreedom=df,
                 residvariance=sigmasq_cap, varofregcoeff=Varofbeta_cap,
-                t_value=t_beta, p_value=pt_beta, formula1=formula, data1=substitute(data))
+                t_value=t_beta, p_value=pt_beta, formula1=formula, data1=substitute(data),
+                formula_Call = match.call())
   # attr(allcoeff,"class") <- "linreg"
   class(allcoeff) <- 'linreg'
   return(allcoeff)
 }
 
 
-# xx = linreg(formula = Petal.Length~Species, data = iris)
+#xx = linreg(formula = Petal.Length~Species, data = iris)
 
 #Defining Methods
 
-print.linreg <- function(x){
+#print.linreg <- function(x){
+#
+#  coeff = as.vector(x$Coefficients)
+#  names(coeff) = rownames(x$Coefficients)
+#  cat("linreg(formula = ",format(x$formula1), ", data = ", x$data1, ")\n\n", sep = "")
+#
+#  if (length(x$Coefficients)) {
+#    cat("Coefficients:\n")
+#    print.default(format(coeff), print.gap = 2L,quote = FALSE)
+#  }
+#  else
+#  {
+#    cat("No coefficients\n")
+#  }
+#}
 
-  coeff = as.vector(x$Coefficients)
-  names(coeff) = rownames(x$Coefficients)
-  cat("linreg(formula = ",format(x$formula1), ", data = ", x$data1, ")\n\n", sep = "")
+print.linreg <- function (obj){
 
-  if (length(x$Coefficients)) {
-    cat("Coefficients:\n")
-    print.default(format(coeff), print.gap = 2L,quote = FALSE)
-  }
-  else
-  {
-    cat("No coefficients\n")
-  }
+  cat("call:\n")
+  base::print(obj$formula_Call)
+  cat("\ncoefficients:\n")
+  base::print(structure(as.vector(t(obj$Coefficients)), names = row.names(obj$Coefficients)))
+
 }
 
 plot.linreg <- function(obj){
+
+  #Creating a theme using Linkoping university colors
+  theme_linkoping <- function() {
+    font <- "Calibri"
+    theme(
+
+      panel.background = element_rect(colour = '#00b5e4', fill = '#a0dbed'),
+      panel.border = element_rect(colour = '#00b5e4', fill = NA),
+      axis.text =    element_text(colour = '#3a3b3b', family = font, size = 12),
+      axis.title =   element_text(colour = '#3a3b3b', family = font, size = 12),
+      plot.title =   element_text(colour = '#3a3b3b', family = font, face = 'bold', size = 16),)
+  }
 
   stand_resid = sqrt(abs(obj$residuals/sd(obj$residuals)))
   df = data.frame(obj$fitted_values,obj$residuals,stand_resid)
@@ -107,15 +130,17 @@ plot.linreg <- function(obj){
   p1 = ggplot(data=df,mapping = aes(x,y)) + geom_point(size = 5, shape = 1)+
     stat_summary(fun = median, color = 'red', geom = 'line', size = 1)+
     labs(y= "Residuals", x = "Fitted values \n lm(Petal.Length ~ Species)", title = "Residuals vs Fitted")+
-    theme(plot.title = element_text(hjust = 0.5))
+    theme(plot.title = element_text(hjust = 0.5))+ theme_linkoping()
 
   p2 = ggplot(data=df,mapping = aes(x,y1)) + geom_point(size = 5, shape = 1)+
     stat_summary(fun = mean, color = 'red', geom = 'line', size = 1)+
     labs(y= expression(sqrt('|Standardized Residuals|')), x = "Fitted values \n lm(Petal.Length ~ Species)", title = "Scale-Location")+
-    theme(plot.title = element_text(hjust = 0.5))
+    theme(plot.title = element_text(hjust = 0.5))+ theme_linkoping()
 
-  print(p1)
-  print(p2)
+  # print(p1)
+  # print(p2)
+
+  gridExtra::grid.arrange(p1,p2,nrow = 2)
 }
 
 
@@ -136,11 +161,10 @@ pred.linreg <- function(x)
 }
 
 
-
-coef <- function(x)
-{
-  UseMethod("coef")
-}
+# coef <- function(x)
+# {
+#   UseMethod("coef")
+# }
 
 coef.linreg <- function(x)
 {
@@ -166,11 +190,10 @@ summary.linreg <- function(x, formula)
 }
 
 
-# print(xx)
-# plot(xx)
-# resid(xx)
-# pred(xx)
-# coef(xx)
-# summary(xx)
-#
-# library('ggplot2')
+#print(xx)
+#plot(xx)
+#resid(xx)
+#pred(xx)
+#coef(xx)
+#summary(xx)
+
