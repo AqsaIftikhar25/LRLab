@@ -1,6 +1,6 @@
 ---
 title: "LinReg_vignette"
-author: "CHEN and Aqsa"
+author: "CHEN, Aqsa and Samira"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -20,46 +20,92 @@ knitr::opts_chunk$set(
 library(LinReg)
 ```
 
-# Description
-calculate the linear regression as lm()
 
-#Usage
+## Description
+
+This package is created to handle linear regression models. Function **linreg()** with two arguments *formula* and *data* return an object with of class **linreg** as an **S3** class.
+Function **linreg()** calculate the linear regression as lm() and return object with a data.
+
+## Usage
+
 ```R
 
 devtools::intall_github('AqsaIftikhar25/LRLab')
 ```
+## Methods
 
-# linreg
-doing linear regression and return an object with data.
+This methods of the **S3** class used in function *linreg()*:
 
-## resid()
-method of the class 
-return the residuals
+* resid()
 
-## pred()
-method of the class 
-return the fitted value
+* pred()
 
-## coef()
-method of the class 
-return the coefficients
+* coef()
 
-## print()
-method of the class 
-return the vector of coefficients 
+* print()
 
-##summary()
-method of the class 
-return the results of coefficients, standard errors, t-value, p-value and the degree of freedom
+* summary()
 
-## plot()
-method of the class 
-return the graph:
+* plot()
 
-1.x--fitted value  y--residual
-2.x--fitted value  y--standarized residuals
 
-## examples
+### resid()
+This method return the residuals of a data.
+
+```r
+lr  <-  linreg(Petal.Length~Species, data = iris)
+resid(lr)
+```
+
+### pred()
+This method return the fitted value of data.
+
+```r
+lr  <-  linreg(Petal.Length~Species, data = iris)
+pred(lr)
+```
+
+### coef()
+This method return the coefficients of data.
+
+```r
+lr  <-  linreg(Petal.Length~Species, data = iris)
+coef(lr)
+```
+
+### print()
+
+This method return the vector of coefficients of data.
+
+```r
+lr  <-  linreg(Petal.Length~Species, data = iris)
+print(lr)
+```
+
+### summary()
+This method return the results of coefficients, standard errors, t-value, p-value and the degree of freedom.
+
+```r
+lr  <-  linreg(Petal.Length~Species, data = iris)
+summary(lr)
+
+```
+
+### plot()
+This method return the graph:
+
+1. x--fitted value  y--residual
+
+2. x--fitted value  y--standarized residuals
+
+```r
+lr  <-  linreg(Petal.Length~Species, data = iris)
+plot(lr)
+
+```
+
+## Examples
+
 ```r
 lr  <-  linreg(Petal.Length~Species, data = iris)
 print(lr)
