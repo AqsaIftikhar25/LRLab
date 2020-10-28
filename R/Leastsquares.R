@@ -10,13 +10,7 @@
 #' @importFrom stats median model.matrix pt sd
 #' @examples
 #' l1 <- linreg(Petal.Length~Species, data = iris)
-#' linreg(mpg~cyl, data = mtcars)
-#' @exportMethod print.linreg
-#' @exportMethod plot.linreg
-#' @exportMethod resid.linreg
-#' @exportMethod pred.linreg
-#' @exportMethod coef.linreg
-#' @exportMethod summary.linreg
+#' l1 <- linreg(mpg~cyl, data = mtcars)
 #' @export
 
 
@@ -100,14 +94,22 @@ linreg <- function(formula, data)
 #  }
 #}
 
-print.linreg <- function (obj){
+#' @rdname print
+#' @method print linreg
+#' @export
+
+print.linreg <- function (x){
 
   cat("call:\n")
-  base::print(obj$formula_Call)
+  base::print(x$formula_Call)
   cat("\ncoefficients:\n")
-  base::print(structure(as.vector(t(obj$Coefficients)), names = row.names(obj$Coefficients)))
+  base::print(structure(as.vector(t(x$Coefficients)), names = row.names(x$Coefficients)))
 
 }
+
+#' @rdname plot
+#' @method plot linreg
+#' @export
 
 plot.linreg <- function(obj){
 
@@ -144,16 +146,27 @@ plot.linreg <- function(obj){
   gridExtra::grid.arrange(p1,p2,nrow = 2)
 }
 
+#' @rdname resid
+#' @method resid linreg
+#' @export
+
+resid <- function(x){
+  UseMethod("resid",x)
+
+}
 
 resid.linreg <- function(x)
 {
   return(as.vector(x$residuals))
 }
 
+#' @rdname pred
+#' @method pred linreg
+#' @export
 
 pred <- function(x)
 {
-  UseMethod("pred")
+  UseMethod("pred",x)
 }
 
 pred.linreg <- function(x)
@@ -161,31 +174,32 @@ pred.linreg <- function(x)
   return(as.vector(x$fitted_values))
 }
 
+#' @rdname coef
+#' @method coef linreg
+#' @export
 
-# coef <- function(x)
-# {
-#   UseMethod("coef")
-# }
-
-coef.linreg <- function(x)
+coef.linreg <- function(obj)
 {
   cat("Coefficients:",'\n')
-  coeff <- as.vector(x$Coefficients)
-  names(coeff) = rownames(x$Coefficients)
+  coeff <- as.vector(obj$Coefficients)
+  names(coeff) = rownames(obj$Coefficients)
   return(coeff)
 }
 
+#' @rdname summary
+#' @method summary linreg
+#' @export
 
-summary.linreg <- function(x, formula)
+summary.linreg <- function(obj, formula)
 {
   emptyvect <- c("***", "***", "***")
-  coef_matrix <- cbind(x$Coefficients, sqrt(diag(x$varofregcoeff)), x$t_value, x$p_value, emptyvect)
+  coef_matrix <- cbind(obj$Coefficients, sqrt(diag(obj$varofregcoeff)), obj$t_value, obj$p_value, emptyvect)
   colnames(coef_matrix) <- c("Coefficients", "Standard Error", "t values", "p values", " ")
   print.table(coef_matrix)
 
-  cat('Residual standard error:', sqrt(x$residvariance))
+  cat('Residual standard error:', sqrt(obj$residvariance))
   cat(' on ')
-  cat(x$degreeoffreedom,"degrees of freedom\n")
+  cat(obj$degreeoffreedom,"degrees of freedom\n")
 
 
 }
