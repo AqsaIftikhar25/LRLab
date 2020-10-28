@@ -80,7 +80,7 @@ linreg <- function(formula, data)
 }
 
 
-#xx = linreg(formula = Petal.Length~Species, data = iris)
+# xx = linreg(formula = Petal.Length~Species, data = iris)
 
 #Defining Methods
 
@@ -113,7 +113,8 @@ plot.linreg <- function(obj){
 
   #Creating a theme using Linkoping university colors
   theme_linkoping <- function() {
-    font <- "Calibri"
+    font <- "Times"
+    windowsFonts("Times" = windowsFont("Times"))
     theme(
 
       panel.background = element_rect(colour = '#00b5e4', fill = '#a0dbed'),
@@ -190,10 +191,10 @@ summary.linreg <- function(x, formula)
 }
 
 
-#print(xx)
-#plot(xx)
-#resid(xx)
-#pred(xx)
-#coef(xx)
-#summary(xx)
+# print(xx)
+# plot(xx)
+# resid(xx)
+# pred(xx)
+# coef(xx)
+# summary(xx)
 
