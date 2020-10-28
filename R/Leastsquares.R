@@ -10,7 +10,13 @@
 #' @importFrom stats median model.matrix pt sd
 #' @examples
 #' l1 <- linreg(Petal.Length~Species, data = iris)
-#' l1 <- linreg(mpg~cyl, data = mtcars)
+#' linreg(mpg~cyl, data = mtcars)
+#' @exportMethod print.linreg
+#' @exportMethod plot.linreg
+#' @exportMethod resid.linreg
+#' @exportMethod pred.linreg
+#' @exportMethod coef.linreg
+#' @exportMethod summary.linreg
 #' @export
 
 
@@ -65,9 +71,9 @@ linreg <- function(formula, data)
   #print(pt_beta)
 
   allcoeff <- list(Coefficients=beta_cap, fitted_values=y_cap, residuals=e_cap, degreeoffreedom=df,
-                residvariance=sigmasq_cap, varofregcoeff=Varofbeta_cap,
-                t_value=t_beta, p_value=pt_beta, formula1=formula, data1=substitute(data),
-                formula_Call = match.call())
+                   residvariance=sigmasq_cap, varofregcoeff=Varofbeta_cap,
+                   t_value=t_beta, p_value=pt_beta, formula1=formula, data1=substitute(data),
+                   formula_Call = match.call())
   # attr(allcoeff,"class") <- "linreg"
   class(allcoeff) <- 'linreg'
   return(allcoeff)
@@ -94,22 +100,14 @@ linreg <- function(formula, data)
 #  }
 #}
 
-#' @rdname print
-#' @method print linreg
-#' @export
-
-print.linreg <- function (x){
+print.linreg <- function (obj){
 
   cat("call:\n")
-  base::print(x$formula_Call)
+  base::print(obj$formula_Call)
   cat("\ncoefficients:\n")
-  base::print(structure(as.vector(t(x$Coefficients)), names = row.names(x$Coefficients)))
+  base::print(structure(as.vector(t(obj$Coefficients)), names = row.names(obj$Coefficients)))
 
 }
-
-#' @rdname plot
-#' @method plot linreg
-#' @export
 
 plot.linreg <- function(obj){
 
@@ -146,27 +144,16 @@ plot.linreg <- function(obj){
   gridExtra::grid.arrange(p1,p2,nrow = 2)
 }
 
-#' @rdname resid
-#' @method resid linreg
-#' @export
-
-resid <- function(x){
-  UseMethod("resid",x)
-
-}
 
 resid.linreg <- function(x)
 {
   return(as.vector(x$residuals))
 }
 
-#' @rdname pred
-#' @method pred linreg
-#' @export
 
 pred <- function(x)
 {
-  UseMethod("pred",x)
+  UseMethod("pred")
 }
 
 pred.linreg <- function(x)
@@ -174,32 +161,31 @@ pred.linreg <- function(x)
   return(as.vector(x$fitted_values))
 }
 
-#' @rdname coef
-#' @method coef linreg
-#' @export
 
-coef.linreg <- function(obj)
+# coef <- function(x)
+# {
+#   UseMethod("coef")
+# }
+
+coef.linreg <- function(x)
 {
   cat("Coefficients:",'\n')
-  coeff <- as.vector(obj$Coefficients)
-  names(coeff) = rownames(obj$Coefficients)
+  coeff <- as.vector(x$Coefficients)
+  names(coeff) = rownames(x$Coefficients)
   return(coeff)
 }
 
-#' @rdname summary
-#' @method summary linreg
-#' @export
 
-summary.linreg <- function(obj, formula)
+summary.linreg <- function(x, formula)
 {
   emptyvect <- c("***", "***", "***")
-  coef_matrix <- cbind(obj$Coefficients, sqrt(diag(obj$varofregcoeff)), obj$t_value, obj$p_value, emptyvect)
+  coef_matrix <- cbind(x$Coefficients, sqrt(diag(x$varofregcoeff)), x$t_value, x$p_value, emptyvect)
   colnames(coef_matrix) <- c("Coefficients", "Standard Error", "t values", "p values", " ")
   print.table(coef_matrix)
 
-  cat('Residual standard error:', sqrt(obj$residvariance))
+  cat('Residual standard error:', sqrt(x$residvariance))
   cat(' on ')
-  cat(obj$degreeoffreedom,"degrees of freedom\n")
+  cat(x$degreeoffreedom,"degrees of freedom\n")
 
 
 }
@@ -211,4 +197,3 @@ summary.linreg <- function(obj, formula)
 # pred(xx)
 # coef(xx)
 # summary(xx)
-
